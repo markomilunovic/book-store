@@ -8,5 +8,9 @@
     <include file="db/changelog/changelog-shelf.xml"/>
     <include file="db/changelog/changelog-book.xml"/>
     <include file="db/changelog/changelog-book-shelves.xml"/>
+    <include file="db/changelog/changelog-author.xml"/>
+    <include file="db/changelog/changelog-customer.xml"/>
+    <include file="db/changelog/changelog-sale.xml"/>
+    <include file="db/changelog/changelog-book-authors.xml"/>
 
 </databaseChangeLog>
