@@ -74,4 +74,12 @@ public class Book {
     )
     private Set<Shelf> shelves;
 
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors;
+
 }
