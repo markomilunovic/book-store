@@ -12,5 +12,6 @@
     <include file="db/changelog/changelog-customer.xml"/>
     <include file="db/changelog/changelog-sale.xml"/>
     <include file="db/changelog/changelog-book-authors.xml"/>
+    <include file="db/changelog/changelog-user.xml"/>
 
 </databaseChangeLog>
