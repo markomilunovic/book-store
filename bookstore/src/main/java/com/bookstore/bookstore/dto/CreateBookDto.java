@@ -63,4 +63,8 @@ public class CreateBookDto {
     @Size(min = 1, message = "At least one author is required.")
     private Set<AuthorDto> authors;
 
+    @Schema(description = "Set of shelf codes where the book is located, each following the format: A00, B01, etc.")
+    @Size(max = 10, message = "A book can be associated with a maximum of 10 shelves.")
+    private Set<@Pattern(regexp = "^[ABC]\\d{2}$", message = "Shelf code must be in the format: A00, B01, etc.") String> shelfCodes;
+
 }

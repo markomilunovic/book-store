@@ -1,6 +1,9 @@
 package com.bookstore.bookstore.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -8,6 +11,9 @@ import java.util.Set;
  * Represents a shelf in the bookstore where books are stored.
  * Each shelf has a unique code and a section designation, and can hold multiple books.
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "shelf")
 public class Shelf {

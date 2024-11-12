@@ -1,11 +1,13 @@
 package com.bookstore.bookstore.mapper;
 
 import com.bookstore.bookstore.common.util.AuthorUtils;
+import com.bookstore.bookstore.common.util.ShelfUtils;
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
 import com.bookstore.bookstore.dto.UpdateBookDto;
 import com.bookstore.bookstore.entity.Author;
 import com.bookstore.bookstore.entity.Book;
+import com.bookstore.bookstore.entity.Shelf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Set;
@@ -14,12 +16,15 @@ import java.util.Set;
 public class BookMapper {
 
     private final AuthorUtils authorUtils;
+    private final ShelfUtils shelfUtils;
 
     @Autowired
     public BookMapper(
-            AuthorUtils authorUtils
+            AuthorUtils authorUtils,
+            ShelfUtils shelfUtils
             ) {
         this.authorUtils = authorUtils;
+        this.shelfUtils = shelfUtils;
     }
 
     public Book createBookDtoToBook(CreateBookDto createBookDto) {
@@ -34,6 +39,11 @@ public class BookMapper {
 
         Set<Author> authors = authorUtils.getOrCreateAuthors(createBookDto.getAuthors());
         book.setAuthors(authors);
+
+        if (createBookDto.getShelfCodes() != null && !createBookDto.getShelfCodes().isEmpty()) {
+            Set<Shelf> shelves = shelfUtils.getOrCreateShelves(createBookDto.getShelfCodes());
+            book.setShelves(shelves);
+        }
 
         return book;
     }
@@ -76,6 +86,11 @@ public class BookMapper {
 
             Set<Author> authors = authorUtils.getOrCreateAuthors(updateBookDto.getAuthors());
             book.setAuthors(authors);
+        }
+
+        if (updateBookDto.getShelfCodes() != null && !updateBookDto.getShelfCodes().isEmpty()) {
+            Set<Shelf> shelves = shelfUtils.getOrCreateShelves(updateBookDto.getShelfCodes());
+            book.setShelves(shelves);
         }
 
         return book;

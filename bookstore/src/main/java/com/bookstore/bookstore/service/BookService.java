@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 
 @Transactional
 @Service
@@ -58,6 +60,7 @@ public class BookService {
         Book book = bookMapper.createBookDtoToBook(createBookDto);
         log.debug("Mapped Book entity from CreateBookDto: {}", book);
 
+
         book = bookRepository.save(book);
         log.info("Book saved with ID: {}", book.getId());
 
@@ -91,7 +94,7 @@ public class BookService {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
 
-        if (bookRepository.existsByIsbn(updateBookDto.getIsbn())) {
+        if (bookRepository.existsByIsbn(updateBookDto.getIsbn()) && !Objects.equals(book.getId(), bookId)) {
             throw new BookAlreadyExistsException(updateBookDto.getIsbn());
         }
 
