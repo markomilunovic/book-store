@@ -5,21 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDate;
 
-/**
- * Data Transfer Object representing a book in the system.
- * <p>
- * This DTO is used to transfer book data, including unique identification,
- * bibliographic details, and availability information. It is typically returned
- * as a response object from API endpoints when accessing or manipulating book records.
- * </p>
- */
+import java.time.LocalDate;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookDto {
+public class BookDetailsDto {
 
     @Schema(description = "Unique identifier of the book", example = "1")
     private Long id;
@@ -27,7 +21,7 @@ public class BookDto {
     @Schema(description = "The name of the book", example = "The Divine Comedy")
     private String name;
 
-    @Schema(description = "The original name of the book", example = "Divina Commedia")
+    @Schema(description = "The original name of the book, useful for translations", example = "Divina Commedia")
     private String originalName;
 
     @Schema(description = "Total number of pages in the book", example = "928")
@@ -44,5 +38,11 @@ public class BookDto {
 
     @Schema(description = "The genre of the book", example = "Poem")
     private String genre;
+
+    @Schema(description = "The authors of the book")
+    private Set<String> authors;
+
+    @Schema(description = "The shelf codes where the books are stored")
+    private Set<String> shelfCodes;
 
 }

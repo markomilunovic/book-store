@@ -1,10 +1,7 @@
 package com.bookstore.bookstore.controller;
 
 
-import com.bookstore.bookstore.dto.BookDto;
-import com.bookstore.bookstore.dto.CreateBookDto;
-import com.bookstore.bookstore.dto.ResponseDto;
-import com.bookstore.bookstore.dto.UpdateBookDto;
+import com.bookstore.bookstore.dto.*;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.service.BookService;
@@ -110,6 +107,28 @@ public class BookController {
         ResponseDto<Void> response = new ResponseDto<>(null, "Book deleted successfully");
         return ResponseEntity.ok(response);
     }
+
+    @Operation(
+            summary = "Get book details by ID",
+            description = "Fetches the complete details of a book by its ID, including authors, genre, and shelves."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Book details fetched successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseDto<BookDetailsDto>> getBookById(@PathVariable Long id) {
+
+        log.info("Request received to fetch book details with ID: {}", id);
+
+        BookDetailsDto bookDetailsDto = bookService.getBookById(id);
+        ResponseDto<BookDetailsDto> response = new ResponseDto<>(bookDetailsDto, "Book details fetched successfully");
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
 

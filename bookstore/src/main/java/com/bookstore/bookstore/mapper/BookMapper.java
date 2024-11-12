@@ -2,6 +2,7 @@ package com.bookstore.bookstore.mapper;
 
 import com.bookstore.bookstore.common.util.AuthorUtils;
 import com.bookstore.bookstore.common.util.ShelfUtils;
+import com.bookstore.bookstore.dto.BookDetailsDto;
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
 import com.bookstore.bookstore.dto.UpdateBookDto;
@@ -11,6 +12,7 @@ import com.bookstore.bookstore.entity.Shelf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class BookMapper {
@@ -95,6 +97,35 @@ public class BookMapper {
 
         return book;
     }
+
+    public BookDetailsDto bookToBookDetailsDto(Book book) {
+        BookDetailsDto bookDetailsDto = new BookDetailsDto();
+        bookDetailsDto.setId(book.getId());
+        bookDetailsDto.setName(book.getName());
+        bookDetailsDto.setOriginalName(book.getOriginalName());
+        bookDetailsDto.setPageCount(book.getTotalPageCount());
+        bookDetailsDto.setIsbn(book.getIsbn());
+        bookDetailsDto.setPublicationDate(book.getPublicationDate());
+        bookDetailsDto.setAvailableCopies(book.getAvailableCopies());
+        bookDetailsDto.setGenre(book.getGenre());
+
+        // Map authors
+        bookDetailsDto.setAuthors(
+                book.getAuthors().stream()
+                        .map(author -> author.getFirstName() + " " + author.getLastName())
+                        .collect(Collectors.toSet())
+        );
+
+        // Map shelves
+        bookDetailsDto.setShelfCodes(
+                book.getShelves().stream()
+                        .map(Shelf::getCode)
+                        .collect(Collectors.toSet())
+        );
+
+        return bookDetailsDto;
+    }
+
 
 }
 

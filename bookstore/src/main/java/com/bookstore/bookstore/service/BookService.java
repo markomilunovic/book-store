@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.service;
 
+import com.bookstore.bookstore.dto.BookDetailsDto;
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
 import com.bookstore.bookstore.dto.UpdateBookDto;
@@ -128,5 +129,23 @@ public class BookService {
         bookRepository.deleteById(bookId);
         log.info("Deleted book with ID: {}", bookId);
     }
+
+    /**
+     * Retrieves a book record by its ID.
+     * <p>
+     * This method fetches the complete details of a book, including authors, genre, and shelves.
+     * If the book with the specified ID does not exist, a {@link BookNotFoundException} is thrown.
+     * </p>
+     *
+     * @param bookId the ID of the book to retrieve
+     * @return a {@link BookDto} representing the fetched book with all associated information
+     * @throws BookNotFoundException if no book with the specified ID is found in the repository
+     */
+    public BookDetailsDto getBookById(Long bookId) {
+        Book book = bookRepository.findByIdWithDetails(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+        return bookMapper.bookToBookDetailsDto(book);
+    }
+
 
 }

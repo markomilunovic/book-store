@@ -1,9 +1,7 @@
 package com.bookstore.bookstore.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,7 +10,10 @@ import java.util.Set;
  * Represents a book entity in the bookstore.
  * Each book has an associated genre, publication details, and can be stored on multiple shelves.
  */
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"shelves", "authors"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,6 +21,7 @@ import java.util.Set;
 public class Book {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
