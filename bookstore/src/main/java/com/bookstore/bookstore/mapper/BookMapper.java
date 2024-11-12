@@ -1,27 +1,28 @@
 package com.bookstore.bookstore.mapper;
 
+import com.bookstore.bookstore.common.util.AuthorUtils;
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
+import com.bookstore.bookstore.dto.UpdateBookDto;
 import com.bookstore.bookstore.entity.Author;
 import com.bookstore.bookstore.entity.Book;
-import com.bookstore.bookstore.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class BookMapper {
 
-    private final AuthorRepository authorRepository;
+    private final AuthorUtils authorUtils;
 
     @Autowired
-    public BookMapper(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
+    public BookMapper(
+            AuthorUtils authorUtils
+            ) {
+        this.authorUtils = authorUtils;
     }
 
     public Book createBookDtoToBook(CreateBookDto createBookDto) {
-
         Book book = new Book();
         book.setName(createBookDto.getName());
         book.setOriginalName(createBookDto.getOriginalName());
@@ -31,18 +32,7 @@ public class BookMapper {
         book.setAvailableCopies(createBookDto.getAvailableCopies());
         book.setGenre(createBookDto.getGenre());
 
-        Set<Author> authors = createBookDto.getAuthors().stream()
-                .map(authorDto -> authorRepository.findByFirstNameAndLastName(
-                        authorDto.getFirstName(),
-                        authorDto.getLastName()
-                ).orElseGet(() -> {
-                    Author newAuthor = new Author();
-                    newAuthor.setFirstName(authorDto.getFirstName());
-                    newAuthor.setLastName(authorDto.getLastName());
-                    return authorRepository.save(newAuthor);
-                }))
-                .collect(Collectors.toSet());
-
+        Set<Author> authors = authorUtils.getOrCreateAuthors(createBookDto.getAuthors());
         book.setAuthors(authors);
 
         return book;
@@ -62,5 +52,34 @@ public class BookMapper {
 
         return bookDto;
     }
+
+    public Book updateBookFromDto(UpdateBookDto updateBookDto, Book book) {
+        if (updateBookDto.getName() != null) {
+            book.setName(updateBookDto.getName());
+        }
+        if (updateBookDto.getOriginalName() != null) {
+            book.setOriginalName(updateBookDto.getOriginalName());
+        }
+        if (updateBookDto.getPageCount() != null) {
+            book.setTotalPageCount(updateBookDto.getPageCount());
+        }
+        if (updateBookDto.getPublicationDate() != null) {
+            book.setPublicationDate(updateBookDto.getPublicationDate());
+        }
+        if (updateBookDto.getAvailableCopies() != null) {
+            book.setAvailableCopies(updateBookDto.getAvailableCopies());
+        }
+        if (updateBookDto.getGenre() != null) {
+            book.setGenre(updateBookDto.getGenre());
+        }
+        if (updateBookDto.getAuthors() != null) {
+
+            Set<Author> authors = authorUtils.getOrCreateAuthors(updateBookDto.getAuthors());
+            book.setAuthors(authors);
+        }
+
+        return book;
+    }
+
 }
 

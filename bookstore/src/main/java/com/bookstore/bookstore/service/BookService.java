@@ -2,8 +2,10 @@ package com.bookstore.bookstore.service;
 
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
+import com.bookstore.bookstore.dto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.entity.Book;
+import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.mapper.BookMapper;
 import com.bookstore.bookstore.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,40 @@ public class BookService {
         log.debug("Mapped BookDto from Book entity: {}", bookDto);
 
         return bookDto;
+    }
+
+    /**
+     * Updates an existing book record in the system.
+     * <p>
+     * This method retrieves a {@link Book} entity by its ID and updates its fields based on the
+     * provided {@link UpdateBookDto}. If the book with the specified ID does not exist, a
+     * {@link BookNotFoundException} is thrown. The updated {@link Book} entity is then saved to
+     * the repository and mapped to a {@link BookDto} to be returned as the response.
+     * </p>
+     *
+     * @param bookId the ID of the book to be updated
+     * @param updateBookDto the data transfer object containing updated details for the book
+     * @return a {@link BookDto} representing the updated book with the modified fields
+     * @throws BookNotFoundException if no book with the specified ID is found in the repository
+     */
+    public BookDto updateBook(Long bookId, UpdateBookDto updateBookDto) {
+
+        log.info("Updating book with ISBN: {}", updateBookDto.getIsbn());
+        log.debug("Received UpdateBookDto: {}", updateBookDto);
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        book = bookMapper.updateBookFromDto(updateBookDto, book);
+        log.debug("Mapped Book entity from UpdateBookDto: {}", book);
+
+        book = bookRepository.save(book);
+        log.info("Updated Book saved with ID: {}", book.getId());
+
+        BookDto updatedBookDto = bookMapper.bookToBookDto(book);
+        log.debug("Mapped updated BookDto from Book entity: {}", updatedBookDto);
+
+        return updatedBookDto;
     }
 
 }

@@ -4,6 +4,7 @@ package com.bookstore.bookstore.controller;
 import com.bookstore.bookstore.dto.BookDto;
 import com.bookstore.bookstore.dto.CreateBookDto;
 import com.bookstore.bookstore.dto.ResponseDto;
+import com.bookstore.bookstore.dto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,6 +59,35 @@ public class BookController {
         log.info("Book created successfully: {}", bookDto.getId());
 
         ResponseDto<BookDto> response = new ResponseDto<>(bookDto, "Book created successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(
+            summary = "Update an existing book",
+            description = "Updates the details of an existing book by its ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Book updated successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PutMapping("update/{id}")
+    public ResponseEntity<ResponseDto<BookDto>> updateBook(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateBookDto updateBookDto) {
+
+        log.info("Received request to update book with ID: {}", id);
+        log.debug("Received request to update book with data: {}", updateBookDto);
+
+        BookDto updatedBook = bookService.updateBook(id, updateBookDto);
+
+        log.debug("BookDto updated with data: {}", updateBookDto);
+        log.info("Book updated successfully: {}", updatedBook.getId());
+
+        ResponseDto<BookDto> response = new ResponseDto<>(updatedBook, "Book updated successfully");
         return ResponseEntity.ok(response);
     }
 

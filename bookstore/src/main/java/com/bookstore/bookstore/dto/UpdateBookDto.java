@@ -11,9 +11,9 @@ import java.time.LocalDate;
 import java.util.Set;
 
 /**
- * Data Transfer Object for creating a new book record.
+ * Data Transfer Object for updating a book record.
  * <p>
- * This DTO contains the information required to create a new book in the system. Validation
+ * This DTO contains the information required to update a book in the system. Validation
  * constraints are applied to ensure that necessary information is provided and meets certain
  * criteria.
  * </p>
@@ -22,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateBookDto {
+public class UpdateBookDto {
 
     @Schema(description = "The name of the book", example = "The Divine Comedy")
     @NotBlank(message = "Book name cannot be blank. Please provide a valid name.")
@@ -35,7 +35,7 @@ public class CreateBookDto {
     @Schema(description = "Total number of pages in the book", example = "928")
     @NotNull(message = "Number of pages is required.")
     @Min(value = 1, message = "Number of pages must be at least 1.")
-    private int pageCount;
+    private Integer pageCount;
 
     @Schema(description = "International Standard Book Number (ISBN) of the book", example = "978-3-16-148410-0")
     @NotNull(message = "ISBN is required.")
@@ -53,14 +53,12 @@ public class CreateBookDto {
     @Schema(description = "Number of available copies in the store", example = "10")
     @NotNull(message = "Number of available copies is required.")
     @Min(value = 0, message = "Number of available copies cannot be negative.")
-    private int availableCopies;
+    private Integer availableCopies;
 
     @Schema(description = "The genre of the book", example = "Epic poem")
     private String genre;
 
-    @Schema(description = "List of authors associated with the book, each represented by an AuthorDto")
+    @Schema(description = "List of authors associated with the book")
     @NotNull(message = "Authors are required.")
-    @Size(min = 1, message = "At least one author is required.")
     private Set<AuthorDto> authors;
-
 }
