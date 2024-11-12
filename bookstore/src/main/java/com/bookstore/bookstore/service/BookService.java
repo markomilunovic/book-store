@@ -107,4 +107,23 @@ public class BookService {
         return updatedBookDto;
     }
 
+    /**
+     * Deletes a book record by its ID.
+     * <p>
+     * This method checks if a book with the specified ID exists in the repository.
+     * If the book is found, it is deleted; otherwise, a {@link BookNotFoundException}
+     * is thrown to indicate that no book was found with the given ID.
+     * </p>
+     *
+     * @param bookId the ID of the book to be deleted
+     * @throws BookNotFoundException if no book with the specified ID is found in the repository
+     */
+    public void deleteBookById(Long bookId) {
+        if (!bookRepository.existsById(bookId)) {
+            throw new BookNotFoundException(bookId);
+        }
+        bookRepository.deleteById(bookId);
+        log.info("Deleted book with ID: {}", bookId);
+    }
+
 }

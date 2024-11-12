@@ -6,6 +6,7 @@ import com.bookstore.bookstore.dto.CreateBookDto;
 import com.bookstore.bookstore.dto.ResponseDto;
 import com.bookstore.bookstore.dto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
+import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -74,7 +75,7 @@ public class BookController {
             @ApiResponse(responseCode = "409", description = "Book already exists",
                     content = @Content(schema = @Schema(implementation = BookAlreadyExistsException.class))),
             @ApiResponse(responseCode = "404", description = "Book not found",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+                    content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
     })
     @PutMapping("update/{id}")
     public ResponseEntity<ResponseDto<BookDto>> updateBook(
@@ -92,5 +93,24 @@ public class BookController {
         ResponseDto<BookDto> response = new ResponseDto<>(updatedBook, "Book updated successfully");
         return ResponseEntity.ok(response);
     }
+
+    @Operation(
+            summary = "Delete a book by ID",
+            description = "Deletes a book record by its ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Book deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
+    })
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<ResponseDto<Void>> deleteBookById(@PathVariable Long id) {
+        log.info("Request received to delete book with ID: {}", id);
+        bookService.deleteBookById(id);
+        ResponseDto<Void> response = new ResponseDto<>(null, "Book deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
