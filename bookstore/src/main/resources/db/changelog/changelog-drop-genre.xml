@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="10" author="marko">
+        <!-- Drop the foreign key constraint on the book table -->
+        <dropForeignKeyConstraint baseTableName="book" constraintName="fk_book_genre"/>
+
+        <!-- Drop the index on the genre column -->
+        <dropIndex tableName="book" indexName="fk_book_genre"/>
+
+        <!-- Rename genre_id column to genre and change it to VARCHAR -->
+        <renameColumn tableName="book" oldColumnName="genre_id" newColumnName="genre" columnDataType="VARCHAR(255)"/>
+
+        <!-- Ensure genre column is nullable -->
+        <modifyDataType tableName="book" columnName="genre" newDataType="VARCHAR(255)"/>
+
+        <!-- Drop Genre table -->
+        <dropTable tableName="genre"/>
+    </changeSet>
+
+</databaseChangeLog>

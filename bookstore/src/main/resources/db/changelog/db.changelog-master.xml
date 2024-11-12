@@ -13,5 +13,6 @@
     <include file="db/changelog/changelog-sale.xml"/>
     <include file="db/changelog/changelog-book-authors.xml"/>
     <include file="db/changelog/changelog-user.xml"/>
+    <include file="db/changelog/changelog-drop-genre.xml"/>
 
 </databaseChangeLog>
