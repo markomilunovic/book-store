@@ -60,11 +60,10 @@ public class Book {
     )
     private int availableCopies;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "genre_id"
+    @Column(
+            name = "genre"
     )
-    private Genre genre;
+    private String genre;
 
     @ManyToMany
     @JoinTable(
