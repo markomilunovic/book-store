@@ -71,6 +71,8 @@ public class BookController {
                     content = @Content(schema = @Schema(implementation = ResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "409", description = "Book already exists",
+                    content = @Content(schema = @Schema(implementation = BookAlreadyExistsException.class))),
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })

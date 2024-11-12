@@ -72,7 +72,8 @@ public class BookService {
      * <p>
      * This method retrieves a {@link Book} entity by its ID and updates its fields based on the
      * provided {@link UpdateBookDto}. If the book with the specified ID does not exist, a
-     * {@link BookNotFoundException} is thrown. The updated {@link Book} entity is then saved to
+     * {@link BookNotFoundException} is thrown. If the book with the same ISBN already exists,
+     * a {@link BookAlreadyExistsException} is thrown .The updated {@link Book} entity is then saved to
      * the repository and mapped to a {@link BookDto} to be returned as the response.
      * </p>
      *
@@ -80,6 +81,7 @@ public class BookService {
      * @param updateBookDto the data transfer object containing updated details for the book
      * @return a {@link BookDto} representing the updated book with the modified fields
      * @throws BookNotFoundException if no book with the specified ID is found in the repository
+     * @throws BookAlreadyExistsException if a book with the specified ISBN already exists in the database
      */
     public BookDto updateBook(Long bookId, UpdateBookDto updateBookDto) {
 
@@ -88,6 +90,10 @@ public class BookService {
 
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        if (bookRepository.existsByIsbn(updateBookDto.getIsbn())) {
+            throw new BookAlreadyExistsException(updateBookDto.getIsbn());
+        }
 
         book = bookMapper.updateBookFromDto(updateBookDto, book);
         log.debug("Mapped Book entity from UpdateBookDto: {}", book);
