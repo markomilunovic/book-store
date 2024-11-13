@@ -42,7 +42,6 @@ public class CustomerService {
 
         List<Customer> customers= customerRepository.findCustomersByFirstNameStartingWith(letter);
 
-        log.debug("Customers content: {}", customers);
         log.debug("Fetched {} customer(s) with filter 'startsWith={}'. Customer details: {}", customers.size(), letter, customers);
 
         return customers.stream()
