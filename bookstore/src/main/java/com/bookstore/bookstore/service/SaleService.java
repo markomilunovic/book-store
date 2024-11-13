@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.service;
 
 import com.bookstore.bookstore.dto.CreateSaleDto;
+import com.bookstore.bookstore.dto.EmployeeSalesDto;
 import com.bookstore.bookstore.dto.SaleDto;
 import com.bookstore.bookstore.entity.Book;
 import com.bookstore.bookstore.entity.Customer;
@@ -12,8 +13,12 @@ import com.bookstore.bookstore.repository.BookRepository;
 import com.bookstore.bookstore.repository.CustomerRepository;
 import com.bookstore.bookstore.repository.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Slf4j
@@ -88,6 +93,18 @@ public class SaleService {
 
         return saleDto;
 
+    }
+
+    /**
+     * Retrieves the top employees by book sales within a specified date range.
+     *
+     * @param dateFrom the starting date and time of the sales range.
+     * @param dateTo the ending date and time of the sales range.
+     * @return a list of {@link EmployeeSalesDto} containing the employee code and the number
+     *         of books sold by each employee within the specified range, limited to the top 10.
+     */
+    public List<EmployeeSalesDto> getTopEmployeeSales(LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return saleRepository.findTopEmployeeSalesWithinDateRange(dateFrom, dateTo, PageRequest.of(0, 10));
     }
 
 }

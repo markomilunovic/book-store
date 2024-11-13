@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.controller;
 
 import com.bookstore.bookstore.dto.CreateSaleDto;
+import com.bookstore.bookstore.dto.EmployeeSalesDto;
 import com.bookstore.bookstore.dto.ResponseDto;
 import com.bookstore.bookstore.dto.SaleDto;
 import com.bookstore.bookstore.exception.BookNotFoundException;
@@ -13,12 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -62,6 +64,25 @@ public class SaleController {
         log.debug("SaleDto created with data: {}", saleDto);
         log.info("Sale created successfully: {}", saleDto.getId());
 
+        return ResponseEntity.ok(response);
+    }
+
+
+    @Operation(summary = "Get top employees by book sales within date range",
+            description = "Returns top 10 employees by book sales within the specified date range.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Top employees fetched successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/top-employees")
+    public ResponseEntity<ResponseDto<List<EmployeeSalesDto>>> getTopEmployees(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo) {
+
+        log.info("Received request to fetch employees with params dateFrom: {}, dateTo: {}", dateFrom, dateTo);
+
+        List<EmployeeSalesDto> topEmployees = saleService.getTopEmployeeSales(dateFrom, dateTo);
+        ResponseDto<List<EmployeeSalesDto>> response = new ResponseDto<>(topEmployees, "Top employees fetched successfully");
         return ResponseEntity.ok(response);
     }
 
