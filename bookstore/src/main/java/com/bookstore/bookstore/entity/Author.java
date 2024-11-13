@@ -1,9 +1,7 @@
 package com.bookstore.bookstore.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -11,7 +9,10 @@ import java.util.Set;
  * Represents an author of books in the bookstore.
  * Each author can be associated with multiple books.
  */
-@Data
+@Getter
+@Setter
+@ToString(exclude = "books")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -19,6 +20,7 @@ import java.util.Set;
 public class Author {
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
@@ -28,12 +30,14 @@ public class Author {
             name = "first_name",
             nullable = false
     )
+    @EqualsAndHashCode.Include
     private String firstName;
 
     @Column(
             name = "last_name",
             nullable = false
     )
+    @EqualsAndHashCode.Include
     private String lastName;
 
     @ManyToMany(
