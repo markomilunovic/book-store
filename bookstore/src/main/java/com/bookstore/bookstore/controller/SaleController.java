@@ -45,7 +45,9 @@ public class SaleController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = BookNotFoundException.class))),
             @ApiResponse(responseCode = "404", description = "Customer not found",
-                    content = @Content(schema = @Schema(implementation = CustomerNotFoundException.class)))
+                    content = @Content(schema = @Schema(implementation = CustomerNotFoundException.class))),
+            @ApiResponse(responseCode = "409", description = "Insufficient copies available for sale",
+                    content = @Content(schema = @Schema(implementation = IllegalStateException.class)))
     })
     @PostMapping("create")
     public ResponseEntity<ResponseDto<SaleDto>> createSale(@Valid @RequestBody CreateSaleDto createSaleDto) {

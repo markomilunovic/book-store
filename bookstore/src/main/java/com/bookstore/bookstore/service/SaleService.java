@@ -65,6 +65,10 @@ public class SaleService {
 
         log.debug("Fetched book details: {}", book);
 
+        if (book.getAvailableCopies() <= 0) {
+            throw new IllegalStateException("Insufficient copies available for sale.");
+        }
+
         Customer customer = customerRepository.findById(createSaleDto.getCustomerId())
                 .orElseThrow(() -> new CustomerNotFoundException(createSaleDto.getCustomerId()));
 
@@ -75,6 +79,9 @@ public class SaleService {
 
         saleRepository.save(sale);
         log.info("Sale saved with ID: {}", sale.getId());
+
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+        bookRepository.save(book);
 
         SaleDto saleDto = saleMapper.saleToSaleDto(sale);
         log.debug("Mapped SaleDto from Sale entity: {}", saleDto);
