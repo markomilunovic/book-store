@@ -13,9 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
+
 
 @Slf4j
 @RestController
@@ -151,8 +154,30 @@ public class BookController {
 
     }
 
+    @Operation(
+            summary = "Get a paginated list of books with filters",
+            description = "Fetches a list of books based on optional filters such as book name, ISBN, and publication year, with pagination support."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Books fetched successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @GetMapping("/list")
+    public ResponseEntity<ResponseDto<Page<BookDto>>> getBooks(
+            @RequestParam(required = false) String bookName,
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) Integer year,
+            Pageable pageable) {
 
+        log.info("Received request to fetch books with filters - Name: {}, ISBN: {}, Year: {}, Page: {}",
+                bookName, isbn, year, pageable);
 
+        Page<BookDto> books = bookService.getBooks(bookName, isbn, year, pageable);
+        ResponseDto<Page<BookDto>> response = new ResponseDto<>(books, "Books fetched successfully");
 
+        log.debug("Response content: {}", response);
+
+        return ResponseEntity.ok(response);
+    }
 
 }

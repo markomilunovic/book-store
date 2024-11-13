@@ -11,6 +11,8 @@ import com.bookstore.bookstore.mapper.BookMapper;
 import com.bookstore.bookstore.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -171,6 +173,41 @@ public class BookService {
         log.info("Increased copies for book with ID: {} by {}", bookId, count);
 
     }
+
+    /**
+     * Retrieves a paginated list of books with optional filters.
+     * <p>
+     * This method allows filtering by book name (case-insensitive and matches names starting
+     * with the provided text), exact ISBN match, and publication year.
+     * </p>
+     *
+     * @param bookName Optional filter for searching by name or original name (case-insensitive).
+     * @param isbn Optional filter for exact ISBN match.
+     * @param year Optional filter for books published in the specified year.
+     * @param pageable Pagination information including page number and size.
+     * @return A paginated list of books matching the given filters with only the specified fields.
+     */
+    public Page<BookDto> getBooks(String bookName, String isbn, Integer year, Pageable pageable) {
+        log.info("Fetching books with filters - Name: {}, ISBN: {}, Year: {}, Page: {}",
+                bookName, isbn, year, pageable);
+
+        Page<Book> books = bookRepository.findAllWithFilters(bookName, isbn, year, pageable);
+
+        Page<BookDto> bookDto = books.map(book -> BookDto.builder()
+                .name(book.getName())
+                .originalName(book.getOriginalName())
+                .isbn(book.getIsbn())
+                .pageCount(book.getTotalPageCount())
+                .availableCopies(book.getAvailableCopies())
+                .publicationDate(book.getPublicationDate())
+                .build()
+        );
+
+        log.debug("BookDto page content: {}", bookDto.getContent());
+
+        return bookDto;
+    }
+
 
 
 
