@@ -147,5 +147,31 @@ public class BookService {
         return bookMapper.bookToBookDetailsDto(book);
     }
 
+    /**
+     * Increases the available copies of a book by a specified count.
+     * <p>
+     * This method retrieves a {@link Book} entity by its ID and increases its
+     * availableCopies attribute by the provided count. If the book with
+     * the specified ID is not found, a {@link BookNotFoundException} is thrown.
+     * The updated book is then saved back to the repository.
+     * </p>
+     *
+     * @param bookId the ID of the book whose available copies are to be increased
+     * @param count the number by which to increase the book's available copies
+     * @throws BookNotFoundException if no book with the specified ID exists in the repository
+     */
+    public void increaseBookCopies(Long bookId, int count) {
+
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new BookNotFoundException(bookId));
+
+        book.setAvailableCopies(book.getAvailableCopies() + count);
+
+        bookRepository.save(book);
+        log.info("Increased copies for book with ID: {} by {}", bookId, count);
+
+    }
+
+
 
 }

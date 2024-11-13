@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class BookNotFoundException extends ResponseStatusException {
 
     public BookNotFoundException(Long id) {
-        super(HttpStatus.CONFLICT, "Book with id " + id + "not found.");
+        super(HttpStatus.CONFLICT, "Book with id " + id + " not found.");
     }
 
 }

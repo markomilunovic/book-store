@@ -127,7 +127,30 @@ public class BookController {
         ResponseDto<BookDetailsDto> response = new ResponseDto<>(bookDetailsDto, "Book details fetched successfully");
 
         return ResponseEntity.ok(response);
+
     }
+
+    @Operation(
+            summary = "Increase the number of copies of a book",
+            description = "Increases the available copies of a book by a specified count."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Number of copies increased successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Book not found",
+                    content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
+    })
+    @PatchMapping("/{id}/increase-copies")
+    public ResponseEntity<ResponseDto<Void>> increaseBookCopies(@PathVariable Long id, @RequestParam int count) {
+
+        log.info("Request received to increase copies for book ID: {} by {}", id, count);
+        bookService.increaseBookCopies(id, count);
+        ResponseDto<Void> response = new ResponseDto<>(null, "Number of copies increased successfully");
+
+        return ResponseEntity.ok(response);
+
+    }
+
 
 
 
