@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,7 @@ public class SaleController {
             @ApiResponse(responseCode = "409", description = "Insufficient copies available for sale",
                     content = @Content(schema = @Schema(implementation = IllegalStateException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_FINANCE')")
     @PostMapping("create")
     public ResponseEntity<ResponseDto<SaleDto>> createSale(@Valid @RequestBody CreateSaleDto createSaleDto) {
 
@@ -72,6 +74,7 @@ public class SaleController {
             @ApiResponse(responseCode = "200", description = "Top employees fetched successfully",
                     content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FINANCE')")
     @GetMapping("/top-employees")
     public ResponseEntity<ResponseDto<List<EmployeeSalesDto>>> getTopEmployees(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
@@ -89,6 +92,7 @@ public class SaleController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Books fetched successfully")
     })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FINANCE')")
     @GetMapping("/top-earnings")
     public ResponseEntity<ResponseDto<List<BookSalesEarningsDto>>> getTop10BooksByEarnings() {
         List<BookSalesEarningsDto> topBooks = saleService.getTop10BooksByEarnings();
@@ -103,6 +107,7 @@ public class SaleController {
             @ApiResponse(responseCode = "400", description = "Invalid input data",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_FINANCE')")
     @GetMapping("/top-sale-time-slots")
     public ResponseEntity<ResponseDto<List<TimeSlotDto>>> getTopSaleTimeSlots(
             @RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,

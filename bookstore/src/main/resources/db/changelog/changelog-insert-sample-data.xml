@@ -1,0 +1,213 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="14" author="marko">
+        <insert tableName="user">
+            <column name="first_name" value="Admin"/>
+            <column name="last_name" value="User"/>
+            <column name="username" value="admin"/>
+            <column name="email" value="admin@bookstore.com"/>
+            <column name="password" value="$2a$10$Iduw2r9rh96mygkrH3gYm.v8Dq72gIhrrbGx8ezwUFlDDjuvVzhCS"/>
+            <column name="user_role" value="ADMIN"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Finance"/>
+            <column name="last_name" value="User"/>
+            <column name="username" value="finance"/>
+            <column name="email" value="finance@bookstore.com"/>
+            <column name="password" value="$2a$10$W/kHGvM9C5v44noOWifExehKWETMwF2U0qmjYTZXZjYmz8034iYae"/>
+            <column name="user_role" value="FINANCE"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="username" value="johndoe"/>
+            <column name="email" value="john.doe@bookstore.com"/>
+            <column name="password" value="$2a$10$pOZ5PsAY7XJrGEE3eLXE..f8G/0N/0XXw14boHrSGeY37PbZKoSXe"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Jane"/>
+            <column name="last_name" value="Doe"/>
+            <column name="username" value="janedoe"/>
+            <column name="email" value="jane.doe@bookstore.com"/>
+            <column name="password" value="$2a$10$qHrLPupUFevwq/v.NgBAlOwkm/Xcqr.3d6dwS7Bw/xmiQnr4xElQi"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Alice"/>
+            <column name="last_name" value="Smith"/>
+            <column name="username" value="alicesmith"/>
+            <column name="email" value="alice.smith@bookstore.com"/>
+            <column name="password" value="$2a$10$WmN.Gj1YjTz6iP9FQOXYl.gWm.Te/wYEPMhXYk3TPXG9VIjf61C2m"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Bob"/>
+            <column name="last_name" value="Brown"/>
+            <column name="username" value="bobbrown"/>
+            <column name="email" value="bob.brown@bookstore.com"/>
+            <column name="password" value="$2a$10$LIYB1nhg5r/ZFF.UW16HseNvSAMpDQElOzF0Ikjd/YZyqqFPWDJ0G"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Charlie"/>
+            <column name="last_name" value="Davis"/>
+            <column name="username" value="charliedavis"/>
+            <column name="email" value="charlie.davis@bookstore.com"/>
+            <column name="password" value="$2a$10$xZMAwpm3tDCPgzmOJawnaOKK4cCMUyhVNvG/U52L3nLC5anIB2o5W"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="David"/>
+            <column name="last_name" value="Evans"/>
+            <column name="username" value="davidevans"/>
+            <column name="email" value="david.evans@bookstore.com"/>
+            <column name="password" value="$2a$10$Easypz5kv6Mmp3gtsxiDAeMB6v654of7SKnDXh6uSIMkOhaeL9p5u"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Eve"/>
+            <column name="last_name" value="Wilson"/>
+            <column name="username" value="evewilson"/>
+            <column name="email" value="eve.wilson@bookstore.com"/>
+            <column name="password" value="$2a$10$siWNjSuB4PjKk95mESd5yeUJjoWZt5wEJvpbVWLMrou0fHCjPcvHC"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <insert tableName="user">
+            <column name="first_name" value="Frank"/>
+            <column name="last_name" value="Taylor"/>
+            <column name="username" value="franktaylor"/>
+            <column name="email" value="frank.taylor@bookstore.com"/>
+            <column name="password" value="$2a$10$KAXfPRnfYvMEjyZ8Rzaq6.m32/CeqsZpzgSrmS7rOWpoc9T7ZUgBW"/>
+            <column name="user_role" value="USER"/>
+        </insert>
+
+        <!-- Author data -->
+        <insert tableName="author">
+            <column name="first_name" value="George"/>
+            <column name="last_name" value="Orwell"/>
+        </insert>
+        <insert tableName="author">
+            <column name="first_name" value="Aldous"/>
+            <column name="last_name" value="Huxley"/>
+        </insert>
+        <insert tableName="author">
+            <column name="first_name" value="Mary"/>
+            <column name="last_name" value="Shelley"/>
+        </insert>
+
+        <!-- Shelf data -->
+        <insert tableName="shelf">
+            <column name="code" value="A01"/>
+            <column name="section" value="A"/>
+        </insert>
+        <insert tableName="shelf">
+            <column name="code" value="B02"/>
+            <column name="section" value="B"/>
+        </insert>
+        <insert tableName="shelf">
+            <column name="code" value="C03"/>
+            <column name="section" value="C"/>
+        </insert>
+
+        <!-- Book data -->
+        <insert tableName="book">
+            <column name="name" value="1984"/>
+            <column name="original_name" value="Nineteen Eighty-Four"/>
+            <column name="total_page_count" value="328"/>
+            <column name="isbn" value="1234567890123"/>
+            <column name="publication_date" value="1949-06-08"/>
+            <column name="available_copies" value="5"/>
+            <column name="genre" value="Dystopian"/>
+        </insert>
+        <insert tableName="book">
+            <column name="name" value="Brave New World"/>
+            <column name="original_name" value="Brave New World"/>
+            <column name="total_page_count" value="311"/>
+            <column name="isbn" value="2345678901234"/>
+            <column name="publication_date" value="1932-08-18"/>
+            <column name="available_copies" value="3"/>
+            <column name="genre" value="Science Fiction"/>
+        </insert>
+        <insert tableName="book">
+            <column name="name" value="Frankenstein"/>
+            <column name="original_name" value="Frankenstein"/>
+            <column name="total_page_count" value="280"/>
+            <column name="isbn" value="3456789012345"/>
+            <column name="publication_date" value="1818-01-01"/>
+            <column name="available_copies" value="2"/>
+            <column name="genre" value="Gothic Fiction"/>
+        </insert>
+
+        <!-- Customer data -->
+        <insert tableName="customer">
+            <column name="first_name" value="Alice"/>
+            <column name="last_name" value="Smith"/>
+            <column name="address" value="123 Elm St, Milan, Italy"/>
+            <column name="email" value="alice.smith@example.com"/>
+        </insert>
+        <insert tableName="customer">
+            <column name="first_name" value="Bob"/>
+            <column name="last_name" value="Jones"/>
+            <column name="address" value="456 Oak St, Rome, Italy"/>
+            <column name="email" value="bob.jones@example.com"/>
+        </insert>
+
+        <!-- Sale data -->
+        <insert tableName="sale">
+            <column name="book_id" value="1"/>
+            <column name="customer_id" value="1"/>
+            <column name="purchase_date" value="2024-11-10T10:00:00"/>
+            <column name="sale_price" value="9.99"/>
+            <column name="employee_code" value="EM001A"/>
+        </insert>
+        <insert tableName="sale">
+            <column name="book_id" value="2"/>
+            <column name="customer_id" value="2"/>
+            <column name="purchase_date" value="2024-11-11T14:30:00"/>
+            <column name="sale_price" value="12.99"/>
+            <column name="employee_code" value="EM002B"/>
+        </insert>
+
+        <!-- Book to Author relationship data -->
+        <insert tableName="book_authors">
+            <column name="book_id" value="1"/>
+            <column name="author_id" value="1"/>
+        </insert>
+        <insert tableName="book_authors">
+            <column name="book_id" value="2"/>
+            <column name="author_id" value="2"/>
+        </insert>
+        <insert tableName="book_authors">
+            <column name="book_id" value="3"/>
+            <column name="author_id" value="3"/>
+        </insert>
+
+        <!-- Book to Shelf relationship data -->
+        <insert tableName="book_shelves">
+            <column name="book_id" value="1"/>
+            <column name="shelf_id" value="1"/>
+        </insert>
+        <insert tableName="book_shelves">
+            <column name="book_id" value="2"/>
+            <column name="shelf_id" value="2"/>
+        </insert>
+        <insert tableName="book_shelves">
+            <column name="book_id" value="3"/>
+            <column name="shelf_id" value="3"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

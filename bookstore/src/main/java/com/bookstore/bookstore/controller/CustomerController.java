@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "200", description = "Customers fetched successfully",
                     content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/all-customers")
     public ResponseEntity<ResponseDto<List<CustomerDto>>> getAllCustomers(
             @RequestParam(value = "startsWith", required = false) String letter

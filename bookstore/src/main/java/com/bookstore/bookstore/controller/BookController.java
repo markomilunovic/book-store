@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,7 @@ public class BookController {
             @ApiResponse(responseCode = "409", description = "Book already exists",
                     content = @Content(schema = @Schema(implementation = BookAlreadyExistsException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ResponseDto<BookDto>> createBook(@Valid @RequestBody CreateBookDto createBookDto) {
 
@@ -81,6 +83,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("update/{id}")
     public ResponseEntity<ResponseDto<BookDto>> updateBook(
             @PathVariable Long id,
@@ -107,6 +110,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<ResponseDto<Void>> deleteBookById(@PathVariable Long id) {
         log.info("Request received to delete book with ID: {}", id);
@@ -125,6 +129,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDto<BookDetailsDto>> getBookById(@PathVariable Long id) {
 
@@ -147,6 +152,7 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content(schema = @Schema(implementation = BookNotFoundException.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PatchMapping("/{id}/increase-copies")
     public ResponseEntity<ResponseDto<Void>> increaseBookCopies(@PathVariable Long id, @RequestParam int count) {
 
@@ -166,6 +172,7 @@ public class BookController {
             @ApiResponse(responseCode = "200", description = "Books fetched successfully",
                     content = @Content(schema = @Schema(implementation = ResponseDto.class)))
     })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/list")
     public ResponseEntity<ResponseDto<Page<BookDto>>> getBooks(
             @RequestParam(required = false) String bookName,

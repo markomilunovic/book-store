@@ -3,6 +3,7 @@ package com.bookstore.bookstore.common.util;
 import com.bookstore.bookstore.common.ErrorResponse;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.exception.BookNotFoundException;
+import com.bookstore.bookstore.exception.InvalidCredentialsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,6 +102,30 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles exceptions for invalid login credentials.
+     * <p>
+     * This method captures {@link InvalidCredentialsException} instances, which are
+     * thrown when a user provides incorrect username or password during login. It returns
+     * an error response with a specific message and an HTTP 401 Unauthorized status.
+     * </p>
+     *
+     * @param ex      The {@link InvalidCredentialsException} indicating invalid login credentials.
+     * @param request The current web request during which the exception occurred.
+     * @return A {@link ResponseEntity} containing an {@link ErrorResponse} with a
+     *         specific error message and a status of {@link HttpStatus#UNAUTHORIZED}.
+     */
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handeInvalidCredentialsException(InvalidCredentialsException ex, WebRequest request) {
+        log.warn("InvalidCredentialsException: {}", ex.getReason());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getReason(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, ex.getStatusCode());
     }
 
 }
