@@ -95,4 +95,23 @@ public class SaleController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Get top book sale time slots", description = "Fetches the top two time slots with the most sales in the specified period.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Time slots fetched successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/top-sale-time-slots")
+    public ResponseEntity<ResponseDto<List<TimeSlotDto>>> getTopSaleTimeSlots(
+            @RequestParam("dateFrom") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
+            @RequestParam("dateTo") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo) {
+
+        List<TimeSlotDto> topTimeSlots = saleService.getTopSaleTimeSlots(dateFrom, dateTo);
+        ResponseDto<List<TimeSlotDto>> response = new ResponseDto<>(topTimeSlots, "Top sale time slots fetched successfully");
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }
