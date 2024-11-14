@@ -1,6 +1,6 @@
 package com.bookstore.bookstore.service;
 
-import com.bookstore.bookstore.dto.*;
+import com.bookstore.bookstore.dto.SaleDto.*;
 import com.bookstore.bookstore.entity.Book;
 import com.bookstore.bookstore.entity.Customer;
 import com.bookstore.bookstore.entity.Sale;
@@ -12,7 +12,6 @@ import com.bookstore.bookstore.repository.CustomerRepository;
 import com.bookstore.bookstore.repository.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

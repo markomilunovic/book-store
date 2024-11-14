@@ -2,10 +2,10 @@ package com.bookstore.bookstore.mapper;
 
 import com.bookstore.bookstore.common.util.AuthorUtils;
 import com.bookstore.bookstore.common.util.ShelfUtils;
-import com.bookstore.bookstore.dto.BookDetailsDto;
-import com.bookstore.bookstore.dto.BookDto;
-import com.bookstore.bookstore.dto.CreateBookDto;
-import com.bookstore.bookstore.dto.UpdateBookDto;
+import com.bookstore.bookstore.dto.BookDto.BookDetailsDto;
+import com.bookstore.bookstore.dto.BookDto.BookDto;
+import com.bookstore.bookstore.dto.BookDto.CreateBookDto;
+import com.bookstore.bookstore.dto.BookDto.UpdateBookDto;
 import com.bookstore.bookstore.entity.Author;
 import com.bookstore.bookstore.entity.Book;
 import com.bookstore.bookstore.entity.Shelf;

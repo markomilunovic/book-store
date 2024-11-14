@@ -1,6 +1,6 @@
 package com.bookstore.bookstore.common.util;
 
-import com.bookstore.bookstore.dto.AuthorDto;
+import com.bookstore.bookstore.dto.AuthorDto.AuthorDto;
 import com.bookstore.bookstore.entity.Author;
 import com.bookstore.bookstore.repository.AuthorRepository;
 import org.springframework.stereotype.Component;

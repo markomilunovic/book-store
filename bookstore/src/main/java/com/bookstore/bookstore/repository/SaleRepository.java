@@ -1,9 +1,8 @@
 package com.bookstore.bookstore.repository;
 
-import com.bookstore.bookstore.dto.BookSalesEarningsDto;
-import com.bookstore.bookstore.dto.EmployeeSalesDto;
+import com.bookstore.bookstore.dto.SaleDto.BookSalesEarningsDto;
+import com.bookstore.bookstore.dto.SaleDto.EmployeeSalesDto;
 import com.bookstore.bookstore.entity.Sale;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    @Query("SELECT new com.bookstore.bookstore.dto.EmployeeSalesDto(s.employeeCode, COUNT(s.id)) " +
+    @Query("SELECT new com.bookstore.bookstore.dto.SaleDto.EmployeeSalesDto(s.employeeCode, COUNT(s.id)) " +
             "FROM Sale s " +
             "WHERE s.purchaseDate BETWEEN :dateFrom AND :dateTo " +
             "GROUP BY s.employeeCode " +
@@ -25,7 +24,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     );
 
 
-    @Query("SELECT new com.bookstore.bookstore.dto.BookSalesEarningsDto(" +
+    @Query("SELECT new com.bookstore.bookstore.dto.SaleDto.BookSalesEarningsDto(" +
             "b.name, COUNT(s.id), SUM(s.salePrice)) " +
             "FROM Sale s JOIN s.book b " +
             "GROUP BY b.id, b.name " +

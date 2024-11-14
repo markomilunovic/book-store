@@ -1,6 +1,6 @@
 package com.bookstore.bookstore.service;
 
-import com.bookstore.bookstore.dto.CustomerDto;
+import com.bookstore.bookstore.dto.CustomerDto.CustomerDto;
 import com.bookstore.bookstore.entity.Customer;
 import com.bookstore.bookstore.mapper.CustomerMapper;
 import com.bookstore.bookstore.repository.CustomerRepository;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
