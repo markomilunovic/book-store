@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.config;
 
 import com.bookstore.bookstore.common.filter.JwtAuthenticationFilter;
+import com.bookstore.bookstore.common.filter.JwtAuthorizationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private  final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Autowired
     public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            JwtAuthorizationFilter jwtAuthorizationFilter
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
     }
 
     @Bean
@@ -32,12 +36,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/finance/**").hasAuthority("ROLE_FINANCE")
+                        .requestMatchers("/common/**").hasAnyAuthority("ROLE_FINANCE", "ROLE_ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) ->
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden"))
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
                 .build();
     }
 }
