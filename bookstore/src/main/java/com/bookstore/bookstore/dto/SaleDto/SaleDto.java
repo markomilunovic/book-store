@@ -1,4 +1,4 @@
-package com.bookstore.bookstore.dto;
+package com.bookstore.bookstore.dto.SaleDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

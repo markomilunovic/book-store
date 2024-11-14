@@ -1,7 +1,7 @@
 package com.bookstore.bookstore.mapper;
 
-import com.bookstore.bookstore.dto.CreateSaleDto;
-import com.bookstore.bookstore.dto.SaleDto;
+import com.bookstore.bookstore.dto.SaleDto.CreateSaleDto;
+import com.bookstore.bookstore.dto.SaleDto.SaleDto;
 import com.bookstore.bookstore.entity.Book;
 import com.bookstore.bookstore.entity.Customer;
 import com.bookstore.bookstore.entity.Sale;

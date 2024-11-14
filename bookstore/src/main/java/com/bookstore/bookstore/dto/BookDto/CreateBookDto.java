@@ -1,5 +1,6 @@
-package com.bookstore.bookstore.dto;
+package com.bookstore.bookstore.dto.BookDto;
 
+import com.bookstore.bookstore.dto.AuthorDto.AuthorDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

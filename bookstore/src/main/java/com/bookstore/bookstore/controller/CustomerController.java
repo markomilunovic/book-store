@@ -1,8 +1,7 @@
 package com.bookstore.bookstore.controller;
 
-import com.bookstore.bookstore.dto.CustomerDto;
+import com.bookstore.bookstore.dto.CustomerDto.CustomerDto;
 import com.bookstore.bookstore.dto.ResponseDto;
-import com.bookstore.bookstore.entity.Customer;
 import com.bookstore.bookstore.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

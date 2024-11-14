@@ -1,6 +1,6 @@
 package com.bookstore.bookstore.mapper;
 
-import com.bookstore.bookstore.dto.AuthorsDto;
+import com.bookstore.bookstore.dto.AuthorDto.AuthorsDto;
 import com.bookstore.bookstore.entity.Author;
 import org.springframework.stereotype.Component;
 

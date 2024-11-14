@@ -2,6 +2,10 @@ package com.bookstore.bookstore.controller;
 
 
 import com.bookstore.bookstore.dto.*;
+import com.bookstore.bookstore.dto.BookDto.BookDetailsDto;
+import com.bookstore.bookstore.dto.BookDto.BookDto;
+import com.bookstore.bookstore.dto.BookDto.CreateBookDto;
+import com.bookstore.bookstore.dto.BookDto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.service.BookService;

@@ -1,6 +1,7 @@
 package com.bookstore.bookstore.controller;
 
 import com.bookstore.bookstore.dto.*;
+import com.bookstore.bookstore.dto.SaleDto.*;
 import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.exception.CustomerNotFoundException;
 import com.bookstore.bookstore.service.SaleService;
