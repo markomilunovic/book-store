@@ -14,5 +14,9 @@
     <include file="db/changelog/changelog-book-authors.xml"/>
     <include file="db/changelog/changelog-user.xml"/>
     <include file="db/changelog/changelog-drop-genre.xml"/>
+    <include file="db/changelog/changelog-add-password-user.xml"/>
+    <include file="db/changelog/changelog-access-token.xml"/>
+    <include file="db/changelog/changelog-refresh-token.xml"/>
+    <include file="db/changelog/changelog-insert-sample-data.xml"/>
 
 </databaseChangeLog>
