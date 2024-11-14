@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.repository;
 
+import com.bookstore.bookstore.dto.BookSalesEarningsDto;
 import com.bookstore.bookstore.dto.EmployeeSalesDto;
 import com.bookstore.bookstore.entity.Sale;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,12 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             @Param("dateTo") LocalDateTime dateTo,
             org.springframework.data.domain.Pageable pageable
     );
+
+    @Query("SELECT new com.bookstore.bookstore.dto.BookSalesEarningsDto(" +
+            "b.name, COUNT(s.id), SUM(s.salePrice)) " +
+            "FROM Sale s JOIN s.book b " +
+            "GROUP BY b.id, b.name " +
+            "ORDER BY SUM(s.salePrice) DESC")
+    List<BookSalesEarningsDto> findTop10BooksByEarnings();
 
 }

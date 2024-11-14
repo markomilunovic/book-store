@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.service;
 
+import com.bookstore.bookstore.dto.BookSalesEarningsDto;
 import com.bookstore.bookstore.dto.CreateSaleDto;
 import com.bookstore.bookstore.dto.EmployeeSalesDto;
 import com.bookstore.bookstore.dto.SaleDto;
@@ -105,6 +106,17 @@ public class SaleService {
      */
     public List<EmployeeSalesDto> getTopEmployeeSales(LocalDateTime dateFrom, LocalDateTime dateTo) {
         return saleRepository.findTopEmployeeSalesWithinDateRange(dateFrom, dateTo, PageRequest.of(0, 10));
+    }
+
+
+    /**
+     * Retrieves the top 10 books by total earnings from sales.
+     *
+     * @return A list of {@link BookSalesEarningsDto} objects, each containing the book name,
+     *         total copies sold, and total earnings.
+     */
+    public List<BookSalesEarningsDto> getTop10BooksByEarnings() {
+        return saleRepository.findTop10BooksByEarnings();
     }
 
 }

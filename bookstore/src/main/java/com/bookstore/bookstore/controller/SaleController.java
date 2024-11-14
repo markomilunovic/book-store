@@ -1,9 +1,6 @@
 package com.bookstore.bookstore.controller;
 
-import com.bookstore.bookstore.dto.CreateSaleDto;
-import com.bookstore.bookstore.dto.EmployeeSalesDto;
-import com.bookstore.bookstore.dto.ResponseDto;
-import com.bookstore.bookstore.dto.SaleDto;
+import com.bookstore.bookstore.dto.*;
 import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.exception.CustomerNotFoundException;
 import com.bookstore.bookstore.service.SaleService;
@@ -83,6 +80,18 @@ public class SaleController {
 
         List<EmployeeSalesDto> topEmployees = saleService.getTopEmployeeSales(dateFrom, dateTo);
         ResponseDto<List<EmployeeSalesDto>> response = new ResponseDto<>(topEmployees, "Top employees fetched successfully");
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get top 10 books by earnings",
+            description = "Returns the top 10 books with the most earnings based on sales.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Books fetched successfully")
+    })
+    @GetMapping("/top-earnings")
+    public ResponseEntity<ResponseDto<List<BookSalesEarningsDto>>> getTop10BooksByEarnings() {
+        List<BookSalesEarningsDto> topBooks = saleService.getTop10BooksByEarnings();
+        ResponseDto<List<BookSalesEarningsDto>> response = new ResponseDto<>(topBooks, "Top 10 books by earnings fetched successfully");
         return ResponseEntity.ok(response);
     }
 

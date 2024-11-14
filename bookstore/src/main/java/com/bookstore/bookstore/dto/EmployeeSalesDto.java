@@ -6,6 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object representing the sales performance of an employee.
+ * <p>
+ * This DTO provides information about the total books sold by an employee,
+ * identified by their unique code.
+ * </p>
+ */
 @Data
 @Builder
 @NoArgsConstructor
