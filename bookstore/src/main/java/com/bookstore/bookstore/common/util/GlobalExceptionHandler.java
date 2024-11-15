@@ -4,6 +4,7 @@ import com.bookstore.bookstore.common.ErrorResponse;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.exception.BookNotFoundException;
 import com.bookstore.bookstore.exception.InvalidCredentialsException;
+import com.bookstore.bookstore.exception.InvalidFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -127,5 +128,29 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, ex.getStatusCode());
     }
+
+    /**
+     * Handles exceptions of type {@link InvalidFileException} thrown within the application.
+     * <p>
+     * This exception handler catches instances of `InvalidFileException` that occur when
+     * an invalid file is uploaded for import. It logs the error message and constructs a standardized
+     * {@link ErrorResponse} to be returned to the client with a `400 Bad Request` status.
+     * </p>
+     *
+     * @param ex      the {@link InvalidFileException} that was thrown
+     * @param request the {@link WebRequest} during which the exception occurred, used for contextual information
+     * @return a {@link ResponseEntity} containing the {@link ErrorResponse} and a `400 Bad Request` HTTP status
+     */
+    @ExceptionHandler(InvalidFileException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFileException(InvalidFileException ex, WebRequest request) {
+        log.error("InvalidFileException: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
 }

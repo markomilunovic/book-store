@@ -1,5 +1,6 @@
 package com.bookstore.bookstore.service;
 
+import com.bookstore.bookstore.common.util.CSVImportUtils;
 import com.bookstore.bookstore.dto.BookDto.BookDetailsDto;
 import com.bookstore.bookstore.dto.BookDto.BookDto;
 import com.bookstore.bookstore.dto.BookDto.CreateBookDto;
@@ -7,16 +8,24 @@ import com.bookstore.bookstore.dto.BookDto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.entity.Book;
 import com.bookstore.bookstore.exception.BookNotFoundException;
+import com.bookstore.bookstore.exception.InvalidFileException;
 import com.bookstore.bookstore.mapper.BookMapper;
 import com.bookstore.bookstore.repository.BookRepository;
+import com.opencsv.exceptions.CsvValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Transactional
@@ -208,7 +217,41 @@ public class BookService {
         return bookDto;
     }
 
+    /**
+     * Imports a list of books from a CSV file and attempts to save each book to the database.
+     * The CSV file is parsed, and each row is mapped to a `CreateBookDto` object, which is then
+     * processed to create a book entry. Successfully processed books are counted, and any failed
+     * records are logged with error details.
 
+     * @param file the CSV file containing book data to be imported
+     * @return a summary message indicating the number of successfully imported books and failed records
+     * @throws IOException if an error occurs while reading the CSV file
+     * @throws CsvValidationException if an error occurs while parsing the CSV file
+     * @throws InvalidFileException if the file is empty or not a CSV format
+     */
+    public String importBooks(MultipartFile file) throws IOException, CsvValidationException {
 
+        if (file.isEmpty() || !Objects.requireNonNull(file.getOriginalFilename()).endsWith(".csv")) {
+            throw new InvalidFileException("Please upload a valid CSV file");
+        }
+
+        int successCount = 0;
+        List<String> failedRecords = new ArrayList<>();
+
+        InputStreamReader reader = new InputStreamReader(file.getInputStream());
+        Set<CreateBookDto> books = CSVImportUtils.parseCSV(reader);
+
+        for (CreateBookDto createBookDto : books) {
+            try {
+                createBook(createBookDto);
+                successCount++;
+            } catch (Exception e) {
+                failedRecords.add(createBookDto.getIsbn() + ": " + e.getMessage());
+            }
+        }
+
+        failedRecords.forEach(record -> log.error("Failed to import record: {}", record));
+        return String.format("Imported %d books successfully. %d rows failed.", successCount, failedRecords.size());
+    }
 
 }
