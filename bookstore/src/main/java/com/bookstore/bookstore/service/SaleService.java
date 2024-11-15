@@ -11,6 +11,7 @@ import com.bookstore.bookstore.repository.BookRepository;
 import com.bookstore.bookstore.repository.CustomerRepository;
 import com.bookstore.bookstore.repository.SaleRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class SaleService {
     private final CustomerRepository customerRepository;
     private final SaleMapper saleMapper;
 
+    @Autowired
     public SaleService(
             SaleRepository saleRepository,
             BookRepository bookRepository,
