@@ -22,10 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -252,6 +250,26 @@ public class BookService {
 
         failedRecords.forEach(record -> log.error("Failed to import record: {}", record));
         return String.format("Imported %d books successfully. %d rows failed.", successCount, failedRecords.size());
+    }
+
+    /**
+     * Retrieves a map of books grouped by their publication year.
+     * <p>
+     * This method fetches all books from the repository, filters out any books
+     * with fewer than 20 pages or with more than three words in their original name,
+     * and then groups the remaining books by their publication year.
+     * </p>
+     *
+     * @return a map where each key is a publication year, and each value is a list of names of books published that year.
+     */
+    public Map<Integer, List<String>> getBooksByPublicationYear() {
+        return bookRepository.findAll().stream()
+                .filter(book -> book.getTotalPageCount() >= 20)
+                .filter(book -> book.getOriginalName().split("\\s+").length <= 3)
+                .collect(Collectors.groupingBy(
+                        book -> book.getPublicationDate().getYear(),
+                        Collectors.mapping(Book::getName, Collectors.toList())
+                ));
     }
 
 }

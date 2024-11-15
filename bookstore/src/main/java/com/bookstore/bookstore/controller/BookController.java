@@ -26,6 +26,8 @@ import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -210,6 +212,23 @@ public class BookController {
 
         String message = bookService.importBooks(file);
         return ResponseEntity.ok(new ResponseDto<>(null, message));
+    }
+
+    @Operation(
+            summary = "Retrieve books grouped by publication year",
+            description = "Fetches a list of books grouped by their year of publication. The response contains each publication year as a key, with values as the names of all books published in that year. " +
+                    "Books with fewer than 20 pages or with more than three words in the original name are excluded."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Books grouped by publication year retrieved successfully",
+                    content = @Content(schema = @Schema(implementation = ResponseDto.class)))
+    })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/books-by-year")
+    public ResponseEntity<ResponseDto<Map<Integer, List<String>>>> getBooksByPublicationYear() {
+        Map<Integer, List<String>> booksByYear = bookService.getBooksByPublicationYear();
+        ResponseDto<Map<Integer, List<String>>> response = new ResponseDto<>(booksByYear, "Books grouped by publication year retrieved successfully.");
+        return ResponseEntity.ok(response);
     }
 
 }
