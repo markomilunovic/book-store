@@ -1,6 +1,5 @@
 package com.bookstore.bookstore.controller;
 
-
 import com.bookstore.bookstore.dto.*;
 import com.bookstore.bookstore.dto.BookDto.BookDetailsDto;
 import com.bookstore.bookstore.dto.BookDto.BookDto;
@@ -8,7 +7,9 @@ import com.bookstore.bookstore.dto.BookDto.CreateBookDto;
 import com.bookstore.bookstore.dto.BookDto.UpdateBookDto;
 import com.bookstore.bookstore.exception.BookAlreadyExistsException;
 import com.bookstore.bookstore.exception.BookNotFoundException;
+import com.bookstore.bookstore.exception.InvalidFileException;
 import com.bookstore.bookstore.service.BookService;
+import com.opencsv.exceptions.CsvValidationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 
 @Slf4j
@@ -189,6 +192,24 @@ public class BookController {
         log.debug("Response content: {}", response);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/import")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Operation(
+            summary = "Import books from CSV file",
+            description = "Uploads a CSV file to import books")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Books imported successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid file format",
+                    content = @Content(schema = @Schema(implementation = InvalidFileException.class)))
+    })
+    public ResponseEntity<ResponseDto<String>> importBooksFromCSV(
+            @RequestParam("file") MultipartFile file
+    ) throws IOException, CsvValidationException {
+
+        String message = bookService.importBooks(file);
+        return ResponseEntity.ok(new ResponseDto<>(null, message));
     }
 
 }
