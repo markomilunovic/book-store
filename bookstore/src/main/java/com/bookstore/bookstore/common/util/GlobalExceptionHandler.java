@@ -1,15 +1,13 @@
 package com.bookstore.bookstore.common.util;
 
 import com.bookstore.bookstore.common.ErrorResponse;
-import com.bookstore.bookstore.exception.BookAlreadyExistsException;
-import com.bookstore.bookstore.exception.BookNotFoundException;
-import com.bookstore.bookstore.exception.InvalidCredentialsException;
-import com.bookstore.bookstore.exception.InvalidFileException;
+import com.bookstore.bookstore.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.context.request.WebRequest;
 
 /**
@@ -150,6 +148,54 @@ public class GlobalExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles exceptions of type {@link CatFactException} when a cat fact cannot be retrieved.
+     * <p>
+     * This method captures {@link CatFactException} instances, which occur when the external Cat Facts API
+     * responds without providing a valid fact. It logs the exception message and constructs a standardized
+     * {@link ErrorResponse} with an HTTP 404 Not Found status.
+     * </p>
+     *
+     * @param ex      the {@link CatFactException} that was thrown
+     * @param request the {@link WebRequest} during which the exception occurred, used for contextual information
+     * @return a {@link ResponseEntity} containing the {@link ErrorResponse} and a `404 Not Found` HTTP status
+     */
+    @ExceptionHandler(CatFactException.class)
+    public ResponseEntity<ErrorResponse> handleCatFactServiceException(CatFactException ex, WebRequest request) {
+        log.warn("CatFactServiceException: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles {@link ResourceAccessException} when the external Cat Facts API is unreachable or times out.
+     * <p>
+     * This handler manages cases where a connection timeout or connectivity issue occurs while accessing the
+     * Cat Facts API, typically due to a lack of response within the configured timeout period. It logs the error
+     * and returns a predefined fallback message, along with an HTTP 503 Service Unavailable status.
+     * </p>
+     *
+     * @param ex      the {@link ResourceAccessException} that was thrown
+     * @param request the {@link WebRequest} during which the exception occurred, used for contextual information
+     * @return a {@link ResponseEntity} containing the {@link ErrorResponse} with a fallback message and a
+     *         `503 Service Unavailable` HTTP status
+     */
+    @ExceptionHandler(ResourceAccessException.class)
+    public ResponseEntity<ErrorResponse> handleResourceAccessException(ResourceAccessException ex, WebRequest request) {
+        String fallbackMessage = "If you poke the tail of a sleeping cat, it will respond accordingly.";
+        log.warn("Timeout or connectivity issue with Cat Facts API: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                fallbackMessage,
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 
