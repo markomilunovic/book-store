@@ -5,6 +5,7 @@ import com.bookstore.bookstore.entity.Customer;
 import com.bookstore.bookstore.mapper.CustomerMapper;
 import com.bookstore.bookstore.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
+    @Autowired
     public CustomerService(
             CustomerRepository customerRepository,
             CustomerMapper customerMapper

@@ -4,6 +4,7 @@ import com.bookstore.bookstore.dto.AuthorDto.AuthorsDto;
 import com.bookstore.bookstore.mapper.AuthorMapper;
 import com.bookstore.bookstore.repository.AuthorRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
 
+    @Autowired
     public AuthorService(
             AuthorRepository authorRepository,
             AuthorMapper authorMapper

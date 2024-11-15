@@ -6,6 +6,7 @@ import com.bookstore.bookstore.entity.RefreshToken;
 import com.bookstore.bookstore.entity.User;
 import com.bookstore.bookstore.repository.AccessTokenRepository;
 import com.bookstore.bookstore.repository.RefreshTokenRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class TokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
 
+    @Autowired
     public TokenService (
             AccessTokenRepository accessTokenRepository,
             RefreshTokenRepository refreshTokenRepository,

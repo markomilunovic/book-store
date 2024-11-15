@@ -3,6 +3,7 @@ package com.bookstore.bookstore.common.util;
 import com.bookstore.bookstore.dto.AuthorDto.AuthorDto;
 import com.bookstore.bookstore.entity.Author;
 import com.bookstore.bookstore.repository.AuthorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -13,6 +14,7 @@ public class AuthorUtils {
 
     public final AuthorRepository authorRepository;
 
+    @Autowired
     public AuthorUtils(
             AuthorRepository authorRepository
     ) {
