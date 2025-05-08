@@ -1,0 +1,22 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <include file="db/changelog/changelog-genre.xml"/>
+    <include file="db/changelog/changelog-shelf.xml"/>
+    <include file="db/changelog/changelog-book.xml"/>
+    <include file="db/changelog/changelog-book-shelves.xml"/>
+    <include file="db/changelog/changelog-author.xml"/>
+    <include file="db/changelog/changelog-customer.xml"/>
+    <include file="db/changelog/changelog-sale.xml"/>
+    <include file="db/changelog/changelog-book-authors.xml"/>
+    <include file="db/changelog/changelog-user.xml"/>
+    <include file="db/changelog/changelog-drop-genre.xml"/>
+    <include file="db/changelog/changelog-add-password-user.xml"/>
+    <include file="db/changelog/changelog-access-token.xml"/>
+    <include file="db/changelog/changelog-refresh-token.xml"/>
+    <include file="db/changelog/changelog-insert-sample-data.xml"/>
+
+</databaseChangeLog>
